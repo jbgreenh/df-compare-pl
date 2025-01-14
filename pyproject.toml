@@ -1,5 +1,5 @@
 [project]
-name = "df-compare_pl"
+name = "df-compare-pl"
 version = "0.1.0"
 description = "compares two polars dataframes for equality"
 readme = "README.md"
