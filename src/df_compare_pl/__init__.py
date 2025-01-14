@@ -1,3 +1,3 @@
-from df_compare.df_compare import df_compare
+from df_compare_pl.df_compare_pl import df_compare
 
 __all__ = ['df_compare']
