@@ -6,7 +6,7 @@ readme = "README.md"
 authors = [
     { name = "jake greenhalgh", email = "48000025+jbgreenh@users.noreply.github.com" }
 ]
-requires-python = ">=3.10,<=3.13"
+requires-python = ">=3.10,<3.14"
 dependencies = [
     "polars>=1.19.0",
 ]
