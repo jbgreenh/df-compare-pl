@@ -11,8 +11,8 @@ compares two polars dataframes for equality
   args:  
    `a`: a pl.Dataframe  
    `b`: a pl.Dataframe  
-   `col_only`: a boolean indicating whether only the columns should be checked
-  `write_csv`: a boolean indicating whether or not to write csvs with the row differences, this is helpful when there are many row differences and the normal prints won't contain everything; defaults to `False`
+   `col_only`: a boolean indicating whether only the columns should be checked  
+   `write_csv`: a boolean indicating whether or not to write csvs with the row differences, this is helpful when there are many row differences and the normal prints won't contain everything; defaults to `False`
 
   returns:  
    `True` if the dataframes are equal, `False` if not  
