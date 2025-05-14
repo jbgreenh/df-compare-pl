@@ -7,6 +7,7 @@ compares two polars dataframes for equality
 - both dfs must have the same rows
 - if the dfs have different columns they will not be checked for a difference in rows
 - row and column order do not matter for row and column comparisons
+- will fill nulls with `is_null` for comparison purposes
 
   args:  
    `a`: a pl.Dataframe  
