@@ -34,23 +34,27 @@ def df_compare(a:pl.DataFrame, b:pl.DataFrame, col_only:bool=False, write_csv:bo
             print(f'col(s) in b but not a: {dif_ba}')
         return False
     if not col_only:
+        original_schema = a.schema
+        a_str = a.with_columns(pl.all().cast(pl.String)).fill_null("__TEMP_NULL__")
+        b_str = b.with_columns(pl.all().cast(pl.String)).fill_null("__TEMP_NULL__")
         anti_ab = (
-            a
-            .with_columns(
-                pl.all().fill_null('is_null')
-            )
-            .join(b, how='anti', on=a.columns, coalesce=True)
+            a_str.join(b_str, how='anti', on=a_str.columns, coalesce=True)
         )
         anti_ba = (
-            b
-            .with_columns(
-                pl.all().fill_null('is_null')
-            )
-            .join(a, how='anti', on=b.columns, coalesce=True)
+            b_str.join(a_str, how='anti', on=b_str.columns, coalesce=True)
         )
         if not (anti_ab.is_empty() and anti_ba.is_empty()):
+            def restore_schema_and_nulls(df:pl.DataFrame, original_schema:pl.Schema)->pl.DataFrame:
+                return (
+                    df
+                    .with_columns(
+                        pl.all().replace('__TEMP_NULL__', None)
+                    )
+                    .cast({k: v for k, v in original_schema.items()})
+                )
             print('rows are different:')
             if not anti_ab.is_empty():
+                anti_ab = restore_schema_and_nulls(anti_ab, original_schema)
                 print('row(s) in a but not b:')
                 print(anti_ab)
                 if write_csv:
@@ -58,6 +62,7 @@ def df_compare(a:pl.DataFrame, b:pl.DataFrame, col_only:bool=False, write_csv:bo
                     anti_ab.write_csv(fn1)
                     print(f'{fn1} written')
             if not anti_ba.is_empty():
+                anti_ba = restore_schema_and_nulls(anti_ba, original_schema)
                 print('row(s) in b but not a:')
                 print(anti_ba)
                 if write_csv:
