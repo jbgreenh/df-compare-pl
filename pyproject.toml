@@ -1,6 +1,6 @@
 [project]
 name = "df-compare-pl"
-version = "0.1.3.2"
+version = "0.1.3.3"
 description = "compares two polars dataframes for equality"
 readme = "README.md"
 authors = [

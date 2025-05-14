@@ -35,10 +35,18 @@ def df_compare(a:pl.DataFrame, b:pl.DataFrame, col_only:bool=False, write_csv:bo
         return False
     if not col_only:
         anti_ab = (
-            a.join(b, how='anti', on=a.columns, coalesce=True)
+            a
+            .with_columns(
+                pl.all().fill_null('is_null')
+            )
+            .join(b, how='anti', on=a.columns, coalesce=True)
         )
         anti_ba = (
-            b.join(a, how='anti', on=b.columns, coalesce=True)
+            b
+            .with_columns(
+                pl.all().fill_null('is_null')
+            )
+            .join(a, how='anti', on=b.columns, coalesce=True)
         )
         if not (anti_ab.is_empty() and anti_ba.is_empty()):
             print('rows are different:')
